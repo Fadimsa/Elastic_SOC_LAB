@@ -79,16 +79,26 @@ Kibana was started as a systemd service and accessed through its local web inter
 <img width="1882" height="857" alt="image" src="https://github.com/user-attachments/assets/57f71bee-3656-4cec-87e8-00a1e426459f" />
 now its time to create an enrollment token and a verification code as it shown on previous image 
 so there is 2 steps for it : 
-1.Create an enrollment token : /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+* 1.Create an enrollment token : /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
 <img width="1901" height="122" alt="image" src="https://github.com/user-attachments/assets/f3ec2029-da98-42b1-a6e5-436f8a75a4ee" />
 
-2.Create a verification code : /usr/share/kibana/bin/kibana-verification-code
+* 2.Create a verification code : /usr/share/kibana/bin/kibana-verification-code
 <img width="1707" height="262" alt="image" src="https://github.com/user-attachments/assets/225ddf60-60d1-43c0-9d62-984deae15b68" />
 <img width="1880" height="812" alt="image" src="https://github.com/user-attachments/assets/f8ab88a0-a67d-45c2-b1a1-f6532aa9fc1b" />
 
 now its ready as it shown : 
 <img width="1907" height="865" alt="image" src="https://github.com/user-attachments/assets/cd980d76-6808-4ae7-b6f7-99c00ba4e00d" />
+after entring the username and password : 
+<img width="1802" height="862" alt="image" src="https://github.com/user-attachments/assets/3cd474ca-bfcd-4039-8b58-942d44498560" />
 
+## Deploying Fleet Server and Elastic Agent
+From kibana menu in managment section there is Fleet option after clicking on it we can see this : 
+<img width="1846" height="867" alt="image" src="https://github.com/user-attachments/assets/a971bc88-19a7-42ab-ad9d-88e36a908aeb" />
+after clicking on add fleet i did : 
+1.Enter the name fleet-server
+2.Enter your lab machine IP as the URL https://IP:8220
+3.Clicked Generate Fleet Server policy
+From here, Elastic will generate a command to run in your terminal to install Fleet Server on your host
 
 
 ### Validation
