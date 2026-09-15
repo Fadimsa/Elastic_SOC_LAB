@@ -54,7 +54,54 @@ The project focuses on understanding how endpoint telemetry is collected, centra
 ```
 
 ## Component Roles
+----------------------------------------------------
+## Deployment: Elasticsearch and Kibana :-
 
+
+The first stage of the lab involved deploying Elasticsearch and Kibana on a Linux host using the provided Debian packages.
+so first we gonna dpkg it like its shown :
+<img width="1601" height="847" alt="image" src="https://github.com/user-attachments/assets/08e99d01-b272-4e16-bb92-abb12566c999" />
+## Starting Elasticsearch
+now we can check on  elasticsearch as its shown :
+<img width="1901" height="860" alt="image" src="https://github.com/user-attachments/assets/d9343249-2f1f-423b-a88f-f120db3058a0" />
+
+The Elasticsearch service was then started, enabled to launch at boot, and verified as running.
+
+### Kibana Deployment :-
+same thing for elastic search we do for kibana:
+<img width="1502" height="810" alt="image" src="https://github.com/user-attachments/assets/d6936fd7-1d81-4f15-a46f-e161015e5938" />
+now Kibana Configuration comes after that to assist us with the Fleet server installation ,  me personally i like to use nano so : 
+<img width="1835" height="851" alt="image" src="https://github.com/user-attachments/assets/5854b66a-9cef-4301-a0e8-9022c5c2ff85" />
+## Starting Kibana
+<img width="1901" height="802" alt="image" src="https://github.com/user-attachments/assets/1876658d-5422-4677-943b-61966f33fa79" />
+
+Kibana was started as a systemd service and accessed through its local web interface on port `5601`as it shown :-
+<img width="1882" height="857" alt="image" src="https://github.com/user-attachments/assets/57f71bee-3656-4cec-87e8-00a1e426459f" />
+now its time to create an enrollment token and a verification code as it shown on previous image 
+so there is 2 steps for it : 
+1.Create an enrollment token : /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+<img width="1901" height="122" alt="image" src="https://github.com/user-attachments/assets/f3ec2029-da98-42b1-a6e5-436f8a75a4ee" />
+
+2.Create a verification code : /usr/share/kibana/bin/kibana-verification-code
+<img width="1707" height="262" alt="image" src="https://github.com/user-attachments/assets/225ddf60-60d1-43c0-9d62-984deae15b68" />
+<img width="1880" height="812" alt="image" src="https://github.com/user-attachments/assets/f8ab88a0-a67d-45c2-b1a1-f6532aa9fc1b" />
+
+now its ready as it shown : 
+<img width="1907" height="865" alt="image" src="https://github.com/user-attachments/assets/cd980d76-6808-4ae7-b6f7-99c00ba4e00d" />
+
+
+
+### Validation
+
+The deployment was validated by checking:
+
+- Elasticsearch service status.
+- Kibana service status.
+- Listening ports.
+- Kibana browser access.
+- Successful authentication using the built-in `elastic` user.
+
+Sensitive credentials, tokens, and verification codes have not been included in this repository.
 ### Elasticsearch
 
 Elasticsearch is the storage and search layer of the Elastic Stack. It indexes and stores security events, logs, alerts, and endpoint telemetry so that analysts can search and analyse the data efficiently.
