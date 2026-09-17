@@ -1,5 +1,3 @@
-# Elastic_SOC_LAB
-
 # Elastic SOC Lab
 
 ![Elastic](https://img.shields.io/badge/Elastic-Stack-005571?logo=elastic)
@@ -54,125 +52,7 @@ The project focuses on understanding how endpoint telemetry is collected, centra
 ```
 
 ## Component Roles
-----------------------------------------------------
-## Deployment: Elasticsearch and Kibana :-
 
-
-The first stage of the lab involved deploying Elasticsearch and Kibana on a Linux host using the provided Debian packages.
-so first we gonna dpkg it like its shown :
-<img width="1601" height="847" alt="image" src="https://github.com/user-attachments/assets/08e99d01-b272-4e16-bb92-abb12566c999" />
-## Starting Elasticsearch
-now we can check on  elasticsearch as its shown :
-<img width="1901" height="860" alt="image" src="https://github.com/user-attachments/assets/d9343249-2f1f-423b-a88f-f120db3058a0" />
-
-The Elasticsearch service was then started, enabled to launch at boot, and verified as running.
-
-### Kibana Deployment :-
-same thing for elastic search we do for kibana:
-<img width="1502" height="810" alt="image" src="https://github.com/user-attachments/assets/d6936fd7-1d81-4f15-a46f-e161015e5938" />
-now Kibana Configuration comes after that to assist us with the Fleet server installation ,  me personally i like to use nano so : 
-<img width="1835" height="851" alt="image" src="https://github.com/user-attachments/assets/5854b66a-9cef-4301-a0e8-9022c5c2ff85" />
-## Starting Kibana
-<img width="1901" height="802" alt="image" src="https://github.com/user-attachments/assets/1876658d-5422-4677-943b-61966f33fa79" />
-
-Kibana was started as a systemd service and accessed through its local web interface on port `5601`as it shown :-
-<img width="1882" height="857" alt="image" src="https://github.com/user-attachments/assets/57f71bee-3656-4cec-87e8-00a1e426459f" />
-now its time to create an enrollment token and a verification code as it shown on previous image 
-so there is 2 steps for it : 
-
-
-
-**1.Create an enrollment token : /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana**
-<img width="1901" height="122" alt="image" src="https://github.com/user-attachments/assets/f3ec2029-da98-42b1-a6e5-436f8a75a4ee" />
-
-
-
-**2.Create a verification code : /usr/share/kibana/bin/kibana-verification-code**
-<img width="1707" height="262" alt="image" src="https://github.com/user-attachments/assets/225ddf60-60d1-43c0-9d62-984deae15b68" />
-<img width="1880" height="812" alt="image" src="https://github.com/user-attachments/assets/f8ab88a0-a67d-45c2-b1a1-f6532aa9fc1b" />
-
-
-
-now its ready as it shown : 
-<img width="1907" height="865" alt="image" src="https://github.com/user-attachments/assets/cd980d76-6808-4ae7-b6f7-99c00ba4e00d" />
-after entring the username and password : 
-<img width="1802" height="862" alt="image" src="https://github.com/user-attachments/assets/3cd474ca-bfcd-4039-8b58-942d44498560" />
-
-## Deploying Fleet Server and Elastic Agent
-From kibana menu in managment section there is Fleet option after clicking on it we can see this : 
-<img width="1846" height="867" alt="image" src="https://github.com/user-attachments/assets/a971bc88-19a7-42ab-ad9d-88e36a908aeb" />
-**after clicking on add fleet i did** :
-
-
-
-**1.Enter the name fleet-server**
-
-
-
-**2.Enter your lab machine IP as the URL https://IP:8220**
-
-
-
-**3.Clicked Generate Fleet Server policy**
-From here, Elastic will generate a command to run in your terminal to install Fleet Server on your host :--
-
-
-after selecting linux-86 as shown :
-<img width="1901" height="667" alt="image" src="https://github.com/user-attachments/assets/a4c9b4e6-fdd3-4b96-9926-1ca4810a3e47" />
-i copied the command and added the --insecure flag since there is self-signed TLS certificates and ran the command on root mode and this is the result : 
-<img width="1901" height="867" alt="image" src="https://github.com/user-attachments/assets/e93a9ba4-1f09-47a1-829e-59f5eb39c520" />
-
-the agent  succesfully installed ... 
-and we can check and find out its already on the interface as it shown : 
-<img width="1912" height="815" alt="image" src="https://github.com/user-attachments/assets/7cb6ef74-3084-4422-b520-069e821a63a7" />
-
-
-## Agent Policies and Integrations
-
-we can check up on agent policies from agent policies > Fleet Server Policy
-<img width="1911" height="837" alt="image" src="https://github.com/user-attachments/assets/5a74aa0d-282a-4011-875c-fe74350acf18" />
-as its shown there is 2 Agent integrations 
-
-
-By default, the System integration collects host-level telemetry commonly used for security monitoring and troubleshooting:
-
-
-
-
-System logs such as syslog and authentication logs
-
-
-
-Basic system metrics such as CPU, memory, and process activity
-
-
-
-## Confirming Log Ingestion
-<img width="1917" height="471" alt="image" src="https://github.com/user-attachments/assets/e174fae4-5e75-464f-a94a-166b17fdd2db" />
-
-
-
-## Elastic Integrations
-<img width="1917" height="862" alt="image" src="https://github.com/user-attachments/assets/4a1bcec0-7b41-4b29-a55b-fbbc97c03912" />
- we can browse Elastic's hundreds of integrations and install them either in the form of an Agent through a Fleet server or as a Beat. Each integration details page will let you either add the integration directly or provide installation instructions as commands.
-
-
-i took Apache HTTP server as a test select the previous Fleet agent and add it : 
-<img width="1917" height="687" alt="image" src="https://github.com/user-attachments/assets/d191ead1-251f-4e59-867e-3246a8aa0390" />
-
-
-
-### Validation
-
-The deployment was validated by checking:
-
-- Elasticsearch service status.
-- Kibana service status.
-- Listening ports.
-- Kibana browser access.
-- Successful authentication using the built-in `elastic` user.
-
-Sensitive credentials, tokens, and verification codes have not been included in this repository.
 ### Elasticsearch
 
 Elasticsearch is the storage and search layer of the Elastic Stack. It indexes and stores security events, logs, alerts, and endpoint telemetry so that analysts can search and analyse the data efficiently.
@@ -206,6 +86,133 @@ A commonly used Fleet Server port is:
 ```text
 8220
 ```
+
+## Deployment
+
+### Elasticsearch and Kibana Installation
+
+The first stage of the lab involved deploying Elasticsearch and Kibana on a Linux host using the provided Debian packages.
+
+Installation was done using `dpkg`, as shown below:
+
+<img width="1601" height="847" alt="image" src="https://github.com/user-attachments/assets/08e99d01-b272-4e16-bb92-abb12566c999" />
+
+### Starting Elasticsearch
+
+The Elasticsearch service was then started, enabled to launch at boot, and verified as running:
+
+<img width="1901" height="860" alt="image" src="https://github.com/user-attachments/assets/d9343249-2f1f-423b-a88f-f120db3058a0" />
+
+### Kibana Deployment
+
+The same installation process used for Elasticsearch was followed for Kibana:
+
+<img width="1502" height="810" alt="image" src="https://github.com/user-attachments/assets/d6936fd7-1d81-4f15-a46f-e161015e5938" />
+
+Kibana's configuration file was then edited to support the Fleet Server installation, using `nano`:
+
+<img width="1835" height="851" alt="image" src="https://github.com/user-attachments/assets/5854b66a-9cef-4301-a0e8-9022c5c2ff85" />
+
+### Starting Kibana
+
+Kibana was started as a systemd service:
+
+<img width="1901" height="802" alt="image" src="https://github.com/user-attachments/assets/1876658d-5422-4677-943b-61966f33fa79" />
+
+and accessed through its local web interface on port `5601`, as shown below:
+
+<img width="1882" height="857" alt="image" src="https://github.com/user-attachments/assets/57f71bee-3656-4cec-87e8-00a1e426459f" />
+
+Next, an enrollment token and a verification code were generated, in two steps:
+
+1. Create an enrollment token:
+
+```bash
+/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+```
+
+<img width="1901" height="122" alt="image" src="https://github.com/user-attachments/assets/f3ec2029-da98-42b1-a6e5-436f8a75a4ee" />
+
+2. Create a verification code:
+
+```bash
+/usr/share/kibana/bin/kibana-verification-code
+```
+
+<img width="1707" height="262" alt="image" src="https://github.com/user-attachments/assets/225ddf60-60d1-43c0-9d62-984deae15b68" />
+
+<img width="1880" height="812" alt="image" src="https://github.com/user-attachments/assets/f8ab88a0-a67d-45c2-b1a1-f6532aa9fc1b" />
+
+Kibana was then ready, as shown below:
+
+<img width="1907" height="865" alt="image" src="https://github.com/user-attachments/assets/cd980d76-6808-4ae7-b6f7-99c00ba4e00d" />
+
+After entering the username and password:
+
+<img width="1802" height="862" alt="image" src="https://github.com/user-attachments/assets/3cd474ca-bfcd-4039-8b58-942d44498560" />
+
+### Deploying Fleet Server and Elastic Agent
+
+From the Kibana menu, under the Management section, there is a Fleet option. After clicking on it, the following is shown:
+
+<img width="1846" height="867" alt="image" src="https://github.com/user-attachments/assets/a971bc88-19a7-42ab-ad9d-88e36a908aeb" />
+
+After clicking "Add Fleet Server":
+
+1. Entered the name `fleet-server`
+2. Entered the lab machine IP as the URL: `https://IP:8220`
+3. Clicked "Generate Fleet Server policy"
+
+From here, Elastic generates a command to run in the terminal to install Fleet Server on the host.
+
+After selecting linux-x86 as shown below:
+
+<img width="1901" height="667" alt="image" src="https://github.com/user-attachments/assets/a4c9b4e6-fdd3-4b96-9926-1ca4810a3e47" />
+
+The command was copied and the `--insecure` flag was added, since the lab uses self-signed TLS certificates. The command was run in root mode, with the following result:
+
+<img width="1901" height="867" alt="image" src="https://github.com/user-attachments/assets/e93a9ba4-1f09-47a1-829e-59f5eb39c520" />
+
+The agent installed successfully, and it can be confirmed as enrolled in the interface:
+
+<img width="1912" height="815" alt="image" src="https://github.com/user-attachments/assets/7cb6ef74-3084-4422-b520-069e821a63a7" />
+
+### Agent Policies and Integrations
+
+Agent policies can be reviewed from Agent Policies > Fleet Server Policy:
+
+<img width="1911" height="837" alt="image" src="https://github.com/user-attachments/assets/5a74aa0d-282a-4011-875c-fe74350acf18" />
+
+As shown above, there are two Agent integrations. By default, the System integration collects host-level telemetry commonly used for security monitoring and troubleshooting:
+
+- System logs such as syslog and authentication logs
+- Basic system metrics such as CPU, memory, and process activity
+
+### Confirming Log Ingestion
+
+<img width="1917" height="471" alt="image" src="https://github.com/user-attachments/assets/e174fae4-5e75-464f-a94a-166b17fdd2db" />
+
+### Elastic Integrations
+
+<img width="1917" height="862" alt="image" src="https://github.com/user-attachments/assets/4a1bcec0-7b41-4b29-a55b-fbbc97c03912" />
+
+Elastic's hundreds of integrations can be browsed and installed either in the form of an Agent through a Fleet server, or as a Beat. Each integration's details page provides an option to add the integration directly or to view installation instructions as commands.
+
+As a test, the Apache HTTP server integration was added, selecting the previous Fleet agent:
+
+<img width="1917" height="687" alt="image" src="https://github.com/user-attachments/assets/d191ead1-251f-4e59-867e-3246a8aa0390" />
+
+## Validation
+
+The deployment was validated by checking:
+
+- Elasticsearch service status.
+- Kibana service status.
+- Listening ports.
+- Kibana browser access.
+- Successful authentication using the built-in `elastic` user.
+
+Sensitive credentials, tokens, and verification codes have not been included in this repository.
 
 ## Data Flow
 
@@ -290,7 +297,7 @@ The project helped connect the technical components of Elastic with a practical 
 - Add additional endpoint integrations.
 - Create dashboards for authentication and process activity.
 - Develop detection rules for suspicious behaviour.
-- Add an incident-investigation case study.
+- Add an incident-investigation case study, linking to my [log-analysis-with-SIEM](https://github.com/Fadimsa/log-analysis-with-SIEM) and [Threat-Hunting-IOC-Analysis](https://github.com/Fadimsa/Threat-Hunting-IOC-Analysis-Splunk-VirusTotal-) repos as examples of investigations run on a stack like this one.
 - Compare Elastic investigation workflows with Splunk.
 - Document alert severity and escalation criteria.
 
