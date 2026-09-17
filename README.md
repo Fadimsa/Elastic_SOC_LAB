@@ -202,6 +202,36 @@ As a test, the Apache HTTP server integration was added, selecting the previous 
 
 <img width="1917" height="687" alt="image" src="https://github.com/user-attachments/assets/d191ead1-251f-4e59-867e-3246a8aa0390" />
 
+### Managing Custom Log Types
+
+The System and Apache integrations used earlier are pre-packaged: Elastic handles both collecting and parsing the data automatically. Real environments, however, often include proprietary tools or custom applications with their own log format that no built-in integration covers. This section documents how I onboarded one of those into the stack manually.
+
+**Scenario:** a custom VPN solution producing its own log format, which needed to be ingested and made searchable in Elasticsearch. I generated 500 sample VPN log entries at `/var/log/vpnlog` using a provided Python script, then inspected the raw format to identify the fields that needed to be extracted: a timestamp, an event action, a username, a source IP, a VPN client IP, and a VPN server region.
+
+<img width="1661" height="591" alt="image" src="https://github.com/user-attachments/assets/dfe3a18a-ebe5-4441-a0a0-d3c824219528" />
+
+**Building an ingest pipeline.** Since this log source has no built-in integration, Elasticsearch needed to be told explicitly how to parse it. I created a new ingest pipeline (`vpn.logs.pipeline`) in Kibana under Stack Management → Ingest Pipelines, then added two processors:
+
+- **Grok processor** on the `message` field, to extract the six fields identified above out of the raw log line into structured fields (`event.time_string`, `event.action`, `user.name`, `source.ip`, `vpn.client.ip`, `vpn.server.region`).
+- **Date processor** on `event.time_string`, converting it into Elasticsearch's native `@timestamp` field so the events sort and filter correctly by time.
+
+<img width="1607" height="422" alt="image" src="https://github.com/user-attachments/assets/6c066c5f-1ecc-44a0-b734-c7533e903e5c" />
+<img width="900" height="610" alt="image" src="https://github.com/user-attachments/assets/cec3ca69-6ea4-4962-9422-920d06eab6a8" />
+<img width="897" height="607" alt="image" src="https://github.com/user-attachments/assets/63b78500-a725-45d4-b8ca-9c812fd3ab32" />
+<img width="893" height="516" alt="image" src="https://github.com/user-attachments/assets/7fa3fee8-55f5-41c3-8de5-198fad712b40" />
+
+
+
+**Shipping the logs.** With the pipeline built, I added the **Custom Logs (Filestream)** integration from the Integrations menu, applied it to the Fleet Server Policy, pointed it at `/var/log/vpnlog`, and set it to use the `vpn.logs.pipeline` ingest pipeline created above, before saving and deploying the change.
+
+<img width="1897" height="390" alt="image" src="https://github.com/user-attachments/assets/530b91b1-3a6b-47ce-b3b1-635fbf5756bf" />
+
+**Confirming ingestion and parsing.** Back in Discover, I filtered on `event.module: "filestream"` over the last 24 hours and added the parsed fields (`event.action`, `user.name`, `source.ip`, `vpn.client.ip`, `vpn.server.region`) as table columns to confirm the Grok pattern had extracted them correctly, then saved the view as "VPN Logs" for reuse.
+
+<img width="1917" height="717" alt="image" src="https://github.com/user-attachments/assets/7d4318da-fe9f-4952-a9eb-bf50668069e5" />
+
+**Why this matters for a SOC:** most real environments have at least one log source that isn't covered by a pre-built integration. Being able to inspect a raw log format, build a parsing pipeline, and validate the result in Discover — rather than relying only on out-of-the-box integrations — reflects the kind of onboarding work a SOC/detection engineer does when a new data source needs to be brought into the SIEM.
+
 ## Validation
 
 The deployment was validated by checking:
