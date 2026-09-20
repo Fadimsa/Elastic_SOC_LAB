@@ -27,7 +27,7 @@ The project focuses on understanding how endpoint telemetry is collected, centra
 - Fleet Server
 - Elastic Integrations
 - KQL
-- TryHackMe training environment
+
 
 ## Architecture
 
